@@ -12,7 +12,7 @@ interface ConnectorInterface
 {
     /**
      * @param array $config
-     * @return mixed
+     * @return Connection
      */
     public function connect(array $config): Connection;
 }

@@ -2,8 +2,7 @@
 
 namespace Bezb\RedisBundle\Connector;
 
-use Bezb\RedisBundle\Connection\Connection;
-use Bezb\RedisBundle\Connection\PhpRedisConnection;
+use Bezb\RedisBundle\Connection\{ Connection, PhpRedisConnection };
 
 /**
  * Class PhpRedisConnector

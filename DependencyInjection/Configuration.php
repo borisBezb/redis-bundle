@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @return TreeBuilder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
 
@@ -25,11 +25,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('predis')
                 ->end()
                 ->scalarNode('default')
-                    ->isRequired()
+                    ->defaultValue('default')
                 ->end()
                 ->arrayNode('connections')
                     ->useAttributeAsKey('name')
-                    ->defaultValue('default')
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('host')

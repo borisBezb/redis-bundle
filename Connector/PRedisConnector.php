@@ -2,8 +2,7 @@
 
 namespace Bezb\RedisBundle\Connector;
 
-use Bezb\RedisBundle\Connection\Connection;
-use Bezb\RedisBundle\Connection\PRedisConnection;
+use Bezb\RedisBundle\Connection\{ Connection, PRedisConnection };
 use Predis\Client;
 
 /**

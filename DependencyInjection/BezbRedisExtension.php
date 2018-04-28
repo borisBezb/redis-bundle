@@ -2,7 +2,7 @@
 
 namespace Bezb\RedisBundle\DependencyInjection;
 
-use Bezb\RedisBundle\Redis\RedisManager;
+use Bezb\RedisBundle\RedisManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -29,6 +29,6 @@ class BezbRedisExtension extends Extension
         $manager->addArgument($config['connections']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 }

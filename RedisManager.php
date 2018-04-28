@@ -1,10 +1,9 @@
 <?php
 
-namespace Bezb\RedisBundle\Redis;
+namespace Bezb\RedisBundle;
 
-use Bezb\RedisBundle\Connector\ConnectorInterface;
-use Bezb\RedisBundle\Connector\PhpRedisConnector;
-use Bezb\RedisBundle\Connector\PRedisConnector;
+use Bezb\RedisBundle\Connection\Connection;
+use Bezb\RedisBundle\Connector\{ ConnectorInterface, PhpRedisConnector, PRedisConnector };
 
 /**
  * Class RedisManager
@@ -40,10 +39,10 @@ class RedisManager
 
     /**
      * @param string $name
-     * @return mixed
+     * @return Connection
      * @throws \Exception
      */
-    public function getConnection(string $name = 'default')
+    public function getConnection(string $name = 'default'): Connection
     {
         if (!isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolveConnection($name);
@@ -54,10 +53,10 @@ class RedisManager
 
     /**
      * @param $name
-     * @return \Bezb\RedisBundle\Connection\Connection|mixed
+     * @return \Bezb\RedisBundle\Connection\Connection
      * @throws \Exception
      */
-    public function resolveConnection($name)
+    public function resolveConnection($name): Connection
     {
         if (!isset($this->config[$name])) {
             throw new \Exception("Connection $name does not configured");
