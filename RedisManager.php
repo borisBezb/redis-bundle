@@ -2,6 +2,7 @@
 
 namespace Bezb\RedisBundle;
 
+use App\Exception\RedisException;
 use Bezb\RedisBundle\Connection\Connection;
 use Bezb\RedisBundle\Connector\{ ConnectorInterface, PhpRedisConnector, PRedisConnector };
 
@@ -17,6 +18,11 @@ class RedisManager
     protected $driver;
 
     /**
+     * @var string
+     */
+    protected $default;
+
+    /**
      * @var array
      */
     protected $config = [];
@@ -29,11 +35,13 @@ class RedisManager
     /**
      * RedisManager constructor.
      * @param string $driver
+     * @param string $default
      * @param array $config
      */
-    public function __construct(string $driver, array $config)
+    public function __construct(string $driver, string $default, array $config)
     {
         $this->driver = $driver;
+        $this->default = $default;
         $this->config = $config;
     }
 
@@ -42,8 +50,12 @@ class RedisManager
      * @return Connection
      * @throws \Exception
      */
-    public function getConnection(string $name = 'default'): Connection
+    public function getConnection(?string $name): Connection
     {
+        if (!$name) {
+            $name = $this->default;
+        }
+
         if (!isset($this->connections[$name])) {
             $this->connections[$name] = $this->resolveConnection($name);
         }
@@ -54,12 +66,12 @@ class RedisManager
     /**
      * @param $name
      * @return \Bezb\RedisBundle\Connection\Connection
-     * @throws \Exception
+     * @throws RedisException
      */
     public function resolveConnection($name): Connection
     {
         if (!isset($this->config[$name])) {
-            throw new \Exception("Connection $name does not configured");
+            throw new RedisException("Connection $name does not configured");
         }
 
         return $this->getConnector()->connect($this->config[$name]);

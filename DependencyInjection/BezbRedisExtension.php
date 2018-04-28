@@ -24,9 +24,11 @@ class BezbRedisExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $manager = $container->getDefinition(RedisManager::class);
-
-        $manager->addArgument($config['driver']);
-        $manager->addArgument($config['connections']);
+        $manager
+            ->addArgument($config['driver'])
+            ->addArgument($config['default'])
+            ->addArgument($config['connections'])
+        ;
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
