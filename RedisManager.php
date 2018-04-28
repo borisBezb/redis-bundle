@@ -2,9 +2,9 @@
 
 namespace Bezb\RedisBundle;
 
-use App\Exception\RedisException;
 use Bezb\RedisBundle\Connection\Connection;
 use Bezb\RedisBundle\Connector\{ ConnectorInterface, PhpRedisConnector, PRedisConnector };
+use Bezb\RedisBundle\Exception\RedisException;
 
 /**
  * Class RedisManager
@@ -48,7 +48,6 @@ class RedisManager
     /**
      * @param string $name
      * @return Connection
-     * @throws \Exception
      */
     public function getConnection(?string $name): Connection
     {
