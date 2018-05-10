@@ -28,7 +28,7 @@ class RedisManager
     protected $config = [];
 
     /**
-     * @var array
+     * @var Connection[]
      */
     protected $connections = [];
 
@@ -88,5 +88,18 @@ class RedisManager
             case 'redis':
                 return new PhpRedisConnector();
         }
+    }
+
+    /**
+     * @param $name
+     */
+    public function close($name)
+    {
+        if (!isset($this->connections[$name])) {
+            return;
+        }
+
+        $this->connections[$name]->close();
+        unset($this->connections[$name]);
     }
 }
