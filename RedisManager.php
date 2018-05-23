@@ -46,10 +46,11 @@ class RedisManager
     }
 
     /**
-     * @param string $name
+     * @param null|string $name
      * @return Connection
+     * @throws RedisException
      */
-    public function getConnection(?string $name): Connection
+    public function getConnection(?string $name = null): Connection
     {
         if (!$name) {
             $name = $this->default;
