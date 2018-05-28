@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue(0)
                             ->end()
                             ->booleanNode('persistent')
-                                ->defaultValue(true)
+                                ->defaultValue(false)
                             ->end()
                             ->enumNode('serializer')
                                 ->values(['none', 'php', 'igbinary'])
