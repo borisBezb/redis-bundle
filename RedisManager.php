@@ -2,8 +2,7 @@
 
 namespace Bezb\RedisBundle;
 
-use Bezb\RedisBundle\Connection\Connection;
-use Bezb\RedisBundle\Connector\{ ConnectorInterface, PhpRedisConnector, PRedisConnector };
+use Bezb\RedisBundle\Connection\{ Connection, PhpRedisConnection, PRedisConnection };
 use Bezb\RedisBundle\Exception\RedisException;
 
 /**
@@ -74,33 +73,12 @@ class RedisManager
             throw new RedisException("Connection $name does not configured");
         }
 
-        return $this->getConnector()->connect($this->config[$name]);
-    }
-
-    /**
-     * @return ConnectorInterface
-     */
-    protected function getConnector(): ConnectorInterface
-    {
         switch ($this->driver) {
             case 'predis':
-                return new PRedisConnector();
+                return new PRedisConnection($this->config[$name]);
 
             case 'redis':
-                return new PhpRedisConnector();
+                return new PhpRedisConnection($this->config[$name]);
         }
-    }
-
-    /**
-     * @param $name
-     */
-    public function close($name)
-    {
-        if (!isset($this->connections[$name])) {
-            return;
-        }
-
-        $this->connections[$name]->close();
-        unset($this->connections[$name]);
     }
 }

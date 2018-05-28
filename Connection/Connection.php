@@ -154,7 +154,6 @@ use Predis\Client;
  * @method string geodist($key, $member1, $member2, $unit = null)
  * @method array  georadius($key, $longitude, $latitude, $radius, $unit, array $options = null)
  * @method array  georadiusbymember($key, $member, $radius, $unit, array $options = null)
- * @method bool   close()
  */
 abstract class Connection
 {
@@ -164,13 +163,43 @@ abstract class Connection
     protected $client;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
+     * Connection constructor.
+     * @param array $config
+     */
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * @param $name
      * @param array $arguments
      * @return mixed
      */
     public function command($name, $arguments = [])
     {
-        return $this->client->{$name}(...$arguments);
+        try {
+            return $this->getClient()->{$name}(...$arguments);
+        } catch (\RedisException $e) {
+            $this->client->close();
+            $this->client = null;
+
+            return $this->getClient()->{$name}(...$arguments);
+        }
+    }
+
+    /**
+     * Close Redis connection
+     */
+    public function close()
+    {
+        $this->client->close();
+        $this->client = null;
     }
 
     /**
@@ -182,4 +211,21 @@ abstract class Connection
     {
         return $this->command($name, $arguments);
     }
+
+    /**
+     * @return Client|\Redis
+     */
+    public function getClient()
+    {
+        if (!$this->client) {
+            $this->client = $this->connect();
+        }
+
+        return $this->client;
+    }
+
+    /**
+     * @return mixed
+     */
+    abstract protected function connect();
 }

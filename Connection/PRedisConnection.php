@@ -18,4 +18,20 @@ class PRedisConnection extends Connection
     {
         $this->client = $client;
     }
+
+    /**
+     * @return Client
+     */
+    protected function connect()
+    {
+        return new Client([
+            'host'                  => $this->config['host'],
+            'port'                  => $this->config['port'],
+            'password'              => $this->config['password'],
+            'database'              => $this->config['database'],
+            'persistent'            => $this->config['persistent'] ?? true,
+            'timeout'               => $this->config['timeout'],
+            'read_write_timeout'    => $this->config['read_timeout']
+        ]);
+    }
 }
