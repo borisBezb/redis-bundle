@@ -186,8 +186,7 @@ abstract class Connection
         try {
             return $this->getClient()->{$name}(...$arguments);
         } catch (\RedisException $e) {
-            $this->client->close();
-            $this->client = null;
+            $this->close();
 
             return $this->getClient()->{$name}(...$arguments);
         }
@@ -198,7 +197,10 @@ abstract class Connection
      */
     public function close()
     {
-        $this->client->close();
+        if ($this->client) {
+            $this->client->close();
+        }
+
         $this->client = null;
     }
 
