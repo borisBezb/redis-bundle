@@ -16,9 +16,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('bezb_redis');
 
-        $treeBuilder->root('bezb_redis')
+        $treeBuilder->getRootNode()
             ->children()
                 ->enumNode('driver')
                     ->values(['predis', 'redis'])
